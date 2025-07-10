@@ -8,7 +8,10 @@ import { appendFile } from "fs/promises";
 export async function generate(url: string) {
   const startTime = Date.now();
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox', '--disable-setuid-sandbox']
+  });
   const resources = await extractResources(url, browser);
   const pdfs = await Promise.all(
     resources.map(async (resource) => urlToPDF(resource, browser))
